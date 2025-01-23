@@ -7,7 +7,7 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 # Copier le service
-COPY quote.py .
+COPY search.py .
 
 # Expose le port
 EXPOSE 5003

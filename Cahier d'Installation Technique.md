@@ -49,4 +49,4 @@ user@Minikube:~$ kubectl create namespace production
 namespace/production created
 ```
 ## Lot 3 : Refactorisation de l’application
-##### Installation de python sur la VM pour tester indépendamment nos api (et installer les modules : flask, redis, swagger *et* wraps)
+#### Installation de python sur la VM pour tester indépendamment nos api (et installer les modules : flask, redis, swagger *et* wraps)

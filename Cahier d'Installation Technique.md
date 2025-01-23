@@ -6,6 +6,21 @@ Elaboré par **Loris Egault** & **Simon Rageul** ***(Binôme 5)***
 ## Lot 1 : Définition de l'architecture
 ![Diagramme de l'architecture technique](SchémaSAE503.svg)
 ## Lot 2 : Mise en place et configuration d'un orchestrateur de conteneurs
+
 ##### Installation de docker :
-<img src="imgs/docker.webp" alt="Logo Docker" width="50">
+<a href="https://docs.docker.com/engine/install/debian/">
+  <img src="imgs/docker.webp" width="50">
+</a>
 https://docs.docker.com/engine/install/debian/
+
+##### Installation de minikube :
+<a href="https://kubernetes.io/fr/docs/tasks/tools/install-minikube/">
+  <img src="imgs/minikube.png" width="50">
+</a>
+https://kubernetes.io/fr/docs/tasks/tools/install-minikube/
+
+##### Installation de kubectl :
+<a href="https://kubernetes.io/fr/docs/tasks/tools/install-minikube/">
+  <img src="imgs/kubectl.svg" width="50">
+</a>
+https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/#install-kubectl-on-linux

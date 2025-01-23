@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: quote-api
-        image: quote-api:latest
+        image: legault291/quote-api:latest
         ports:
         - containerPort: 5002
         env:

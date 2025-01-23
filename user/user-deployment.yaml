@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: user-api
-        image: user-api:latest
+        image: legault291/user-api:latest
         ports:
         - containerPort: 5001
         env:
@@ -44,3 +44,4 @@ spec:
       port: 5001
       targetPort: 5001
   type: ClusterIP
+

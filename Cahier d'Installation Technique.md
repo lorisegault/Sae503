@@ -8,4 +8,4 @@ Elaboré par **Loris Egault** & **Simon Rageul** ***(Binôme 5)***
 ## Lot 2 : Mise en place et configuration d'un orchestrateur de conteneurs
 ##### Installation de docker :
 <img src="imgs/docker.webp" alt="Logo Docker" width="50">
-[Documentation](https://docs.docker.com/engine/install/debian/)
+https://docs.docker.com/engine/install/debian/

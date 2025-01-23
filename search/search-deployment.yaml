@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: search-api
-        image: search-api:latest
+        image: legault291/search-api:latest
         ports:
         - containerPort: 5003
         env:
@@ -37,7 +37,7 @@ metadata:
 spec:
   selector:
     app: search-api
-  ports:
+ports:
     - protocol: TCP
       port: 5003
       targetPort: 5003

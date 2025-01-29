@@ -49,13 +49,13 @@ sudo docker run hello-world
 
 #### Installation de Minikube
 
-Dans notre cas Minikube est déjà installé sur la VM Linux mais pour installer Minikube on peux suivre les consignes du site suivant : 
+Dans notre cas Minikube est déjà installé sur la VM Linux mais pour installer Minikube on peut suivre les consignes du site suivant : 
 
 <a href="https://kubernetes.io/fr/docs/tasks/tools/install-minikube/">
 https://kubernetes.io/fr/docs/tasks/tools/install-minikube/
 </a>
 
-On peux ensuite installer `kubectl` en utilisant les consignes du site suivant : 
+On peut ensuite installer `kubectl` en utilisant les consignes du site suivant : 
 
 <a href="https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/#install-kubectl-on-linux">
 https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/#install-kubectl-on-linux
@@ -100,7 +100,7 @@ user@Minikube:~$ minikube start --driver=docker
 🌟  Modules activés: storage-provisioner, default-storageclass
 🏄  Terminé ! kubectl est maintenant configuré pour utiliser "minikube" c
 ```
-On peux alors utiliser Minikube comme orchestrateur !
+On peut alors utiliser Minikube comme orchestrateur !
 
 Nous avons ensuite crée 2 namespace permettant de distinguer les environnements  `qualification` et `production`: 
 ```bash

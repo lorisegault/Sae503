@@ -1,3 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traefik
+  namespace: production
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: traefik
+  template:
+    metadata:
+      labels:
+        app: traefik
+    spec:
+      containers:
+      - name: traefik
+        image: traefik:v2.10
+        args:
+          - "--api.insecure=true"
+          - "--providers.kubernetesingress"
+          - "--entrypoints.web.address=:80"
+        ports:
+          - name: web
+            containerPort: 80
+          - name: admin
+            containerPort: 8080
+        volumeMounts:
+          - mountPath: "/etc/traefik/"
+            name: config
+      volumes:
+        - name: config
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefik
+  namespace: production
+spec:
+  selector:
+    app: traefik
+  ports:
+    - protocol: TCP
+      name: web
+      port: 80
+      targetPort: 80
+    - protocol: TCP
+      name: admin
+      port: 8080
+      targetPort: 8080
+  type: LoadBalancer
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: user-api-ingress
+  namespace: production
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+spec:
+  rules:
+  - host: user-api.192.168.1.100.nip.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: user-api-service
+            port:
+              number: 5001
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -7,7 +80,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.entrypoints: web
 spec:
   rules:
-  - host: search-api.192.168.1.100.nip.io  # Remplace avec ton IP publique ou privée
+  - host: search-api.192.168.1.100.nip.io
     http:
       paths:
       - path: /
@@ -17,3 +90,23 @@ spec:
             name: search-api-service
             port:
               number: 5003
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: quote-api-ingress
+  namespace: production
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+spec:
+  rules:
+  - host: quote-api.192.168.1.100.nip.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: quote-api-service
+            port:
+              number: 5002

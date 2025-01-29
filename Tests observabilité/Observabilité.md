@@ -22,7 +22,10 @@
 
 Installer les bibliothèques nécessaires : **pip install psutil docker**.
 Configurer un compte email pour l'envoi des alertes :
+
 **modifier**
-    sender_email = "your_email@example.com"
-    receiver_email = "alert_receiver@example.com"
-    password = "your_password"
+```python
+sender_email = "your_email@example.com"
+receiver_email = "alert_receiver@example.com"
+password = "your_password"
+```

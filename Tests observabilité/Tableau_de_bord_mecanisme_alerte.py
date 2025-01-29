@@ -66,7 +66,7 @@ def check_alerts():
             send_alert("Alerte : Utilisation élevée du CPU", "L'utilisation du CPU dépasse 80%.")
         if len(metrics["memory_usage"]) > 0 and max(metrics["memory_usage"]) > 80:
             send_alert("Alerte : Utilisation élevée de la mémoire", "L'utilisation de la mémoire dépasse 80%.")
-        time.sleep(10)
+        time.sleep(300)
 
 # Endpoint pour afficher le tableau de bord
 @app.route('/dashboard', methods=['GET'])

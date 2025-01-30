@@ -4,11 +4,11 @@ metadata:
   name: api-ingress
   namespace: production
   annotations:
-    kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/router.entrypoints: web
 spec:
+  ingressClassName: traefik  
   rules:
-  - host: search-api.192.168.49.2.nip.io 
+  - host: search-api.192.168.49.2.nip.io
     http:
       paths:
       - path: /
@@ -18,7 +18,7 @@ spec:
             name: search-api-service
             port:
               number: 5003
-  - host: quote-api.192.168.49.2.nip.io # Remplacez par votre IP
+  - host: quote-api.192.168.49.2.nip.io
     http:
       paths:
       - path: /
@@ -28,7 +28,7 @@ spec:
             name: quote-api-service
             port:
               number: 5002
-  - host: user-api.192.168.49.2.nip.io # Remplacez par votre IP
+  - host: user-api.192.168.49.2.nip.io
     http:
       paths:
       - path: /

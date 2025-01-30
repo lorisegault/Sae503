@@ -35,7 +35,7 @@ Cela démarre :
 
 ## 🔧 Configuration de Prometheus
 
-Créez un fichier `prometheus.yml` :
+Créer un fichier `prometheus.yml` :
 ```yaml
 global:
   scrape_interval: 5s
@@ -46,7 +46,7 @@ scrape_configs:
       - targets: ['localhost:8000']
 ```
 
-Puis lancez **Prometheus** :
+Puis lancer **Prometheus** :
 ```sh
 prometheus --config.file=prometheus.yml
 ```
@@ -58,33 +58,10 @@ prometheus --config.file=prometheus.yml
    - Allez dans **Grafana > Configuration > Data Sources**
    - Ajoutez **Prometheus** avec l’URL : `http://localhost:9090`
 
-2. **Créez un Dashboard**
-   - Ajoutez des **Panels** avec des requêtes PromQL, par exemple :
-     - `db_response_time`
-     - `cpu_usage`
-     - `memory_usage`
-     - `request_count`
-
----
-
-## 🚨 Alertes et Notifications
-*ne pas oublier de mettre les adresses mail dans le code python*
-L’application envoie des alertes par **e-mail** si :
-- **Temps de réponse Redis** > 1s
-- **CPU** > 80%
-- **Mémoire** > 80%
-
-Modifiez les paramètres SMTP dans `send_alert()` pour activer les notifications.
-
 ---
 
 ## 🛠️ Dépannage
-- Vérifiez que **Redis fonctionne** avec `redis-cli ping`
-- Assurez-vous que **Prometheus collecte les métriques** (`http://localhost:9090/targets`)
-- Consultez les logs de Grafana pour vérifier la connexion à Prometheus
-
----
-
-## 🏁 Conclusion
-Avec cette solution, vous disposez d’un **tableau de bord en temps réel** pour surveiller votre infrastructure et déclencher des alertes automatiquement ! 🚀
+- Vérifier que **Redis fonctionne** avec `redis-cli ping`
+- Assurer-vous que **Prometheus collecte les métriques** (`http://localhost:9090/targets`)
+- Consulter les logs de Grafana pour vérifier la connexion à Prometheus
 

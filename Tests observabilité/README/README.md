@@ -62,6 +62,6 @@ prometheus --config.file=prometheus.yml
 
 ## 🛠️ Dépannage
 - Vérifier que **Redis fonctionne** avec `redis-cli ping`
-- s'Assurer que **Prometheus collecte les métriques** (`http://localhost:9090/targets`)
+- S'assurer que **Prometheus collecte les métriques** (`http://localhost:9090/targets`)
 - Consulter les logs de Grafana pour vérifier la connexion à Prometheus
 

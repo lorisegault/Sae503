@@ -6,15 +6,17 @@ from redis import Redis
 from threading import Thread
 import smtplib
 from email.mime.text import MIMEText
+from prometheus_client import Gauge, Counter, generate_latest, CONTENT_TYPE_LATEST, start_http_server
 
-# Ajout de métriques
-metrics = {
-    "db_response_time": [],
-    "request_count": {},
-    "cpu_usage": [],
-    "memory_usage": [],
-    "running_containers": 0
-}
+app = Flask(__name__)
+redis_client = Redis(host='localhost', port=6379, db=0)
+
+# Déclaration des métriques Prometheus
+db_response_time_gauge = Gauge('db_response_time', 'Temps de réponse de Redis')
+cpu_usage_gauge = Gauge('cpu_usage', 'Utilisation du CPU en pourcentage')
+memory_usage_gauge = Gauge('memory_usage', 'Utilisation de la mémoire en pourcentage')
+request_count = Counter('request_count', 'Nombre total de requêtes', ['endpoint'])
+running_containers_gauge = Gauge('running_containers', 'Nombre de containers en cours d\'exécution')
 
 # Fonction pour mesurer le temps de réponse de Redis
 def measure_db_response_time():
@@ -22,23 +24,29 @@ def measure_db_response_time():
     redis_client.ping()
     end_time = time.time()
     response_time = end_time - start_time
-    metrics["db_response_time"].append(response_time)
+    db_response_time_gauge.set(response_time)
+    return response_time
 
 # Middleware pour compter les requêtes
 @app.before_request
 def count_requests():
     endpoint = request.endpoint
-    if endpoint not in metrics["request_count"]:
-        metrics["request_count"][endpoint] = 0
-    metrics["request_count"][endpoint] += 1
+    request_count.labels(endpoint).inc()
 
 # Fonction pour surveiller les ressources système
 def monitor_resources():
     while True:
-        metrics["cpu_usage"].append(psutil.cpu_percent(interval=1))
-        metrics["memory_usage"].append(psutil.virtual_memory().percent)
+        cpu_usage = psutil.cpu_percent(interval=1)
+        memory_usage = psutil.virtual_memory().percent
+        db_response_time = measure_db_response_time()
+
+        cpu_usage_gauge.set(cpu_usage)
+        memory_usage_gauge.set(memory_usage)
+        db_response_time_gauge.set(db_response_time)
+
         docker_client = docker.from_env()
-        metrics["running_containers"] = len(docker_client.containers.list())
+        running_containers_gauge.set(len(docker_client.containers.list()))
+
         time.sleep(5)
 
 # Fonction pour envoyer une alerte par email
@@ -60,28 +68,32 @@ def send_alert(subject, message):
 # Vérification des alertes
 def check_alerts():
     while True:
-        if len(metrics["db_response_time"]) > 0 and max(metrics["db_response_time"]) > 1:
+        if db_response_time_gauge._value.get() > 1:
             send_alert("Alerte : Temps de réponse élevé", "Le temps de réponse de la base de données dépasse 1 seconde.")
-        if len(metrics["cpu_usage"]) > 0 and max(metrics["cpu_usage"]) > 80:
+        if cpu_usage_gauge._value.get() > 80:
             send_alert("Alerte : Utilisation élevée du CPU", "L'utilisation du CPU dépasse 80%.")
-        if len(metrics["memory_usage"]) > 0 and max(metrics["memory_usage"]) > 80:
+        if memory_usage_gauge._value.get() > 80:
             send_alert("Alerte : Utilisation élevée de la mémoire", "L'utilisation de la mémoire dépasse 80%.")
         time.sleep(300)
 
 # Endpoint pour afficher le tableau de bord
 @app.route('/dashboard', methods=['GET'])
 def dashboard():
-    """
-    Tableau de bord synthétique
-    ---
-    responses:
-      200:
-        description: Données du tableau de bord
-    """
-    return jsonify(metrics), 200
+    return jsonify({
+        "db_response_time": db_response_time_gauge._value.get(),
+        "cpu_usage": cpu_usage_gauge._value.get(),
+        "memory_usage": memory_usage_gauge._value.get(),
+        "running_containers": running_containers_gauge._value.get()
+    }), 200
+
+# Exposition des métriques Prometheus
+@app.route('/metrics')
+def metrics():
+    return generate_latest(), 200, {'Content-Type': CONTENT_TYPE_LATEST}
 
 # Lancer les threads pour la surveillance
 if __name__ == '__main__':
+    start_http_server(8000)  # Expose les métriques sur le port 8000
     Thread(target=monitor_resources, daemon=True).start()
     Thread(target=check_alerts, daemon=True).start()
-    app.run(host='0.0.0.0', port=APP_PORT)
+    app.run(host='0.0.0.0', port=5000)

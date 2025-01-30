@@ -54,14 +54,14 @@ prometheus --config.file=prometheus.yml
 ---
 
 ## 📊 Configuration de Grafana
-1. **Ajoutez Prometheus comme source de données**
-   - Allez dans **Grafana > Configuration > Data Sources**
-   - Ajoutez **Prometheus** avec l’URL : `http://localhost:9090`
+1. **Ajout de Prometheus comme source de données**
+   - Aller dans **Grafana > Configuration > Data Sources**
+   - Ajouter **Prometheus** avec l’URL : `http://localhost:9090`
 
 ---
 
 ## 🛠️ Dépannage
 - Vérifier que **Redis fonctionne** avec `redis-cli ping`
-- Assurer-vous que **Prometheus collecte les métriques** (`http://localhost:9090/targets`)
+- s'Assurer que **Prometheus collecte les métriques** (`http://localhost:9090/targets`)
 - Consulter les logs de Grafana pour vérifier la connexion à Prometheus
 

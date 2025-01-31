@@ -38,3 +38,18 @@ spec:
       - name: csv-storage
         persistentVolumeClaim:
           claimName: csv-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-api-service
+  namespace: production  
+spec:
+  selector:
+    app: user-api
+  ports:
+    - protocol: TCP
+      port: 5001
+      targetPort: 5001
+  type: ClusterIP
+

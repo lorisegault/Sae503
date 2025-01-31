@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quote-api-deployment
+  namespace: qualification  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: quote-api
+  template:
+    metadata:
+      labels:
+        app: quote-api
+    spec:
+      containers:
+      - name: quote-api
+        image: legault291/quote-api:latest
+        ports:
+        - containerPort: 5002
+        env:
+        - name: REDIS_HOST
+          value: "redis"
+        - name: REDIS_PORT
+          value: "6379"
+        - name: REDIS_DB
+          value: "0"
+        - name: QUOTES_SERVICE_PORT
+          value: "5002"
+        - name: ADMIN_KEY
+          value: "default_key"
+        - name: CSV_FILE_QUOTES
+          value: "/data/initial_data_quotes.csv"
+        volumeMounts:
+        - name: csv-storage
+          mountPath: /data
+      volumes:
+      - name: csv-storage
+        persistentVolumeClaim:
+          claimName: csv-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: quote-api-service
+  namespace: qualification
+spec:
+  selector:
+    app: quote-api
+  ports:
+    - protocol: TCP
+      port: 5002
+      targetPort: 5002
+  type: ClusterIP

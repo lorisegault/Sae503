@@ -38,6 +38,7 @@ if not redis_client.exists("quotes:1"):
 
 # Endpoints
 @app.route('/quotes', methods=['GET'])
+@require_auth
 def get_quotes():
     quotes = redis_client.smembers("quotes")
     quote_list = [redis_client.hgetall(quote) for quote in quotes]

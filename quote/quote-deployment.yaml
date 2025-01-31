@@ -30,18 +30,11 @@ spec:
         - name: ADMIN_KEY
           value: "default_key"
         - name: CSV_FILE_QUOTES
-          value: "initial_data_quotes.csv"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: quote-api-service
-  namespace: production
-spec:
-  selector:
-    app: quote-api
-  ports:
-    - protocol: TCP
-      port: 5002
-      targetPort: 5002
-  type: ClusterIP
+          value: "/data/initial_data_quotes.csv"
+        volumeMounts:
+        - name: csv-storage
+          mountPath: /data
+      volumes:
+      - name: csv-storage
+        persistentVolumeClaim:
+          claimName: csv-pvc

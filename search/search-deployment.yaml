@@ -29,17 +29,10 @@ spec:
           value: "5003"
         - name: ADMIN_KEY
           value: "default_key"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: search-api-service
-  namespace: production
-spec:
-  selector:
-    app: search-api
-  ports:
-    - protocol: TCP
-      port: 5003
-      targetPort: 5003
-  type: ClusterIP
+        volumeMounts:
+        - name: csv-storage
+          mountPath: /data
+      volumes:
+      - name: csv-storage
+        persistentVolumeClaim:
+          claimName: csv-pvc

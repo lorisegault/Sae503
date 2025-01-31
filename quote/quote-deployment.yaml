@@ -38,3 +38,17 @@ spec:
       - name: csv-storage
         persistentVolumeClaim:
           claimName: csv-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: quote-api-service
+  namespace: production
+spec:
+  selector:
+    app: quote-api
+  ports:
+    - protocol: TCP
+      port: 5002
+      targetPort: 5002
+  type: ClusterIP

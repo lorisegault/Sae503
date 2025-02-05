@@ -39,7 +39,7 @@ Kubernetes :
 
 3.3 Reverse Proxy
 Traefik :
-- Gestion des accès httpvers les microservices.
+- Gestion des accès http vers les microservices.
 - Configuration du limiteur de requêtes à 10 requêtes/minute.
 
 3.4 Base de Données

@@ -1,0 +1,11 @@
+globalArguments:
+deployment:
+  kind: DaemonSet
+providers:
+  kubernetesCRD:
+	enabled: true
+service:
+  type: NodePort
+ingressRoute:
+  dashboard:
+	enabled: false

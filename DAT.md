@@ -75,7 +75,7 @@ Schéma global de l'architecture :
   - Permet une bonne supervision et des tableaux de bord interactifs.
 
 - nip.io :
-  - Solution simple et économique pour gérer les FQDN.
+  - Solution simple pour gérer les FQDN.
 
 - Données dans des csv :
   - Facilité de mise en oeuvre.
